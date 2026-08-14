@@ -10,6 +10,7 @@ export interface CliInput {
   prompt: string;
   model: ClaudeModel;
   sessionId?: string;
+  cwd?: string;
 }
 
 const MODEL_MAP: Record<string, ClaudeModel> = {
@@ -103,6 +104,13 @@ function stripOpenClawTooling(text: string): string {
  *
  * Claude Code CLI in --print mode expects a single prompt, not a conversation.
  * We format the messages into a readable format that preserves context.
+ *
+ * The client's system prompt and prior assistant turns are wrapped in tags that
+ * explicitly mark them as foreign, upstream context rather than this CLI's own
+ * identity or history — otherwise the model reads them as an authoritative
+ * <system> block describing itself and starts narrating a different session as
+ * fact. See MANAGER_PROMPT_STRUCTURE_NOTE in subprocess/manager.ts, which is
+ * appended to the real system prompt to explain these tags.
  */
 export function messagesToPrompt(
   messages: OpenAIChatRequest["messages"]
@@ -113,9 +121,10 @@ export function messagesToPrompt(
     const text = extractText(msg.content);
     switch (msg.role) {
       case "system":
-        // System messages become context instructions
         // Strip OpenClaw tooling sections that conflict with Claude Code's native tools
-        parts.push(`<system>\n${stripOpenClawTooling(text)}\n</system>\n`);
+        parts.push(
+          `<upstream_client_system_prompt>\n${stripOpenClawTooling(text)}\n</upstream_client_system_prompt>\n`
+        );
         break;
 
       case "user":
@@ -125,7 +134,9 @@ export function messagesToPrompt(
 
       case "assistant":
         // Previous assistant responses for context
-        parts.push(`<previous_response>\n${text}\n</previous_response>\n`);
+        parts.push(
+          `<upstream_conversation_history role="assistant">\n${text}\n</upstream_conversation_history>\n`
+        );
         break;
     }
   }
@@ -141,5 +152,6 @@ export function openaiToCli(request: OpenAIChatRequest): CliInput {
     prompt: messagesToPrompt(request.messages),
     model: extractModel(request.model),
     sessionId: request.user, // Use OpenAI's user field for session mapping
+    cwd: request.cwd,
   };
 }

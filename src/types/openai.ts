@@ -23,6 +23,7 @@ export interface OpenAIChatRequest {
   frequency_penalty?: number;
   presence_penalty?: number;
   user?: string; // Used for session mapping
+  cwd?: string; // Working directory for the Claude CLI subprocess (non-standard extension)
 }
 
 export interface OpenAIToolCall {
