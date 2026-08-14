@@ -31,7 +31,7 @@ const AVAILABLE_MODELS = [
   {
     id: "claude-fable-5",
     name: "Claude Fable 5",
-    alias: "opus",
+    alias: "claude-fable-5",
     reasoning: true,
   },
   {

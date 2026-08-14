@@ -4,7 +4,7 @@
 
 import type { OpenAIChatRequest, OpenAIContentBlock } from "../types/openai.js";
 
-export type ClaudeModel = "opus" | "sonnet" | "haiku";
+export type ClaudeModel = "opus" | "sonnet" | "haiku" | "claude-fable-5";
 
 export interface CliInput {
   prompt: string;
@@ -18,7 +18,7 @@ const MODEL_MAP: Record<string, ClaudeModel> = {
   // Claude 5 family (current)
   "claude-opus-5": "opus",
   "claude-sonnet-5": "sonnet",
-  "claude-fable-5": "opus",
+  "claude-fable-5": "claude-fable-5",
   // Claude 4 family intermediates (still functional, not retired)
   "claude-opus-4-6": "opus",
   "claude-sonnet-4-5": "sonnet",
@@ -28,7 +28,7 @@ const MODEL_MAP: Record<string, ClaudeModel> = {
   "opus": "opus",
   "sonnet": "sonnet",
   "haiku": "haiku",
-  "fable": "opus",
+  "fable": "claude-fable-5",
 };
 
 /**
