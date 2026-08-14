@@ -386,12 +386,12 @@ async function handleNonStreamingResponse(
 export function handleModels(_req: Request, res: Response): void {
   const now = Math.floor(Date.now() / 1000);
   const modelIds = [
-    "claude-opus-4",
+    "claude-opus-5",
+    "claude-sonnet-5",
+    "claude-fable-5",
     "claude-opus-4-6",
-    "claude-sonnet-4",
     "claude-sonnet-4-5",
     "claude-sonnet-4-6",
-    "claude-haiku-4",
     "claude-haiku-4-5",
   ];
   res.json({

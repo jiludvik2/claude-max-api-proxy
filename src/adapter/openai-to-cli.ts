@@ -15,19 +15,20 @@ export interface CliInput {
 const MODEL_MAP: Record<string, ClaudeModel> = {
   // Direct model names (provider prefixes like `claude-code-cli/` and `claude-max/`
   // are stripped by extractModel before consulting this map)
-  "claude-opus-4": "opus",
+  // Claude 5 family (current)
+  "claude-opus-5": "opus",
+  "claude-sonnet-5": "sonnet",
+  "claude-fable-5": "opus",
+  // Claude 4 family intermediates (still functional, not retired)
   "claude-opus-4-6": "opus",
-  "claude-sonnet-4": "sonnet",
   "claude-sonnet-4-5": "sonnet",
   "claude-sonnet-4-6": "sonnet",
-  "claude-haiku-4": "haiku",
   "claude-haiku-4-5": "haiku",
   // Bare aliases
   "opus": "opus",
   "sonnet": "sonnet",
   "haiku": "haiku",
-  "opus-max": "opus",
-  "sonnet-max": "sonnet",
+  "fable": "opus",
 };
 
 /**
